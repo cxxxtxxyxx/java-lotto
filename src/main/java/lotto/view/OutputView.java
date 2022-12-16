@@ -11,4 +11,8 @@ public class OutputView {
             lotto.viewNumbers();
         }
     }
+
+    public static void printError(IllegalArgumentException e) {
+        System.out.println(e);
+    }
 }

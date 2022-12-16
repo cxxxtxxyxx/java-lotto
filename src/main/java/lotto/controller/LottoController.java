@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import lotto.domain.Lotto;
 import lotto.utils.RandomLottoGenerator;
+import lotto.utils.Validator;
 import lotto.view.InputView;
 import lotto.view.OutputView;
 
@@ -21,11 +22,10 @@ public class LottoController {
         while(true) {
             try {
                 bonusNumber = getBonusNumber();
-                if(winningNumbers.contains(bonusNumber)) {
-                    throw new IllegalArgumentException("당첨 번호에 속하지 않은 보너스 번호를 입력해 주세요");
-                }
+                Validator.checkDuplicatedNumber(winningNumbers, bonusNumber);
+                break;
             } catch (IllegalArgumentException e) {
-                System.out.println(e);
+                OutputView.printError(e);
             }
         }
 
@@ -36,14 +36,12 @@ public class LottoController {
     private int getBonusNumber() {
         while(true) {
             try {
+                InputView.inputBonusNumber();
                 String inputBonusNumber = Console.readLine();
-                String inputBonusNumberRegex = "^[1-45]$";
-                if(!(inputBonusNumber.matches(inputBonusNumberRegex))) {
-                    throw new IllegalArgumentException("1-45 사이의 숫자를 입력해 주세요");
-                }
+                Validator.checkBonusNumberFormat(inputBonusNumber);
                 return Integer.parseInt(inputBonusNumber);
             } catch (IllegalArgumentException e) {
-                System.out.println(e);
+                OutputView.printError(e);
             }
         }
     }
@@ -51,16 +49,14 @@ public class LottoController {
     private List<Integer> getWinningNumbers() {
         while (true) {
             try {
+                InputView.inputWinningNumbers();
                 String inputWinningNumbers = Console.readLine();
-                String inputWinningNumbersRegex = "^[1-45],[1-45],[1-45],[1-45],[1-45],[1-45]$";
-                if (!(inputWinningNumbers.matches(inputWinningNumbersRegex))) {
-                    throw new IllegalArgumentException("형식에 맞도록 입력해주세요");
-                }
+                Validator.checkWinningNumbersFormat(inputWinningNumbers);
                 return Arrays.stream(inputWinningNumbers.split(","))
                         .map(Integer::parseInt)
                         .collect(Collectors.toList());
             } catch (IllegalArgumentException e) {
-                System.out.println(e);
+                OutputView.printError(e);
             }
         }
     }
@@ -75,7 +71,7 @@ public class LottoController {
                 }
                 return Integer.parseInt(inputPayment);
             } catch (IllegalArgumentException e) {
-                System.out.println(e);
+                OutputView.printError(e);
             }
         }
     }
