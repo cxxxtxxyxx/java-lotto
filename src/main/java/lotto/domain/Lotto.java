@@ -20,5 +20,20 @@ public class Lotto {
         System.out.println(numbers);
     }
 
+    public Prize getPrize(List<Integer> winningNumbers, int bonusNumber) {
+        int winningNumberCount = 0;
+        boolean isCorrectBonusNumber = false;
+        for(Integer number : numbers) {
+            if(winningNumbers.contains(number)) {
+                winningNumberCount++;
+            }
+            if(bonusNumber == number) {
+                isCorrectBonusNumber = true;
+            }
+        }
+
+        return Prize.findBy(winningNumberCount, isCorrectBonusNumber);
+    }
+
     // TODO: 추가 기능 구현
 }
