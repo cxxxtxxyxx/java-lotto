@@ -23,11 +23,11 @@ public class Lotto {
     public Prize getPrize(List<Integer> winningNumbers, int bonusNumber) {
         int winningNumberCount = 0;
         boolean isCorrectBonusNumber = false;
-        for(Integer number : numbers) {
-            if(winningNumbers.contains(number)) {
+        for (Integer number : numbers) {
+            if (winningNumbers.contains(number)) {
                 winningNumberCount++;
             }
-            if(bonusNumber == number) {
+            if (bonusNumber == number) {
                 isCorrectBonusNumber = true;
             }
         }

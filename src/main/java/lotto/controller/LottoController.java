@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import lotto.domain.Lotto;
 import lotto.domain.Prize;
+import lotto.utils.Converter;
 import lotto.utils.RandomLottoGenerator;
 import lotto.utils.Validator;
 import lotto.view.InputView;
@@ -28,7 +29,7 @@ public class LottoController {
     }
 
     private int getBonusNumber(List<Integer> winningNumbers) {
-        while(true) {
+        while (true) {
             try {
                 InputView.inputBonusNumber();
                 String inputBonusNumber = Console.readLine();
@@ -47,9 +48,8 @@ public class LottoController {
                 InputView.inputWinningNumbers();
                 String inputWinningNumbers = Console.readLine();
                 Validator.checkWinningNumbersFormat(inputWinningNumbers);
-                return Arrays.stream(inputWinningNumbers.split(","))
-                        .map(Integer::parseInt)
-                        .collect(Collectors.toList());
+                return Converter.stringArrayToIntegerList(inputWinningNumbers.split(","));
+
             } catch (IllegalArgumentException e) {
                 OutputView.printError(e);
             }

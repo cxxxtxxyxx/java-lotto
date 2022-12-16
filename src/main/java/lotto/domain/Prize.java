@@ -27,20 +27,27 @@ public enum Prize {
     public String getFormat() {
         return format;
     }
-    public static boolean isLose(Prize prize) {
+
+    private static boolean isLose(Prize prize) {
         return prize.equals(LOSE);
     }
 
-    public static String calculateProfit(HashMap<Prize, Integer> winningResult, int payment) {
+    private static long getTotalPrize(HashMap<Prize, Integer> winningResult) {
         long totalPrize = 0L;
-        for(Prize prize : winningResult.keySet()) {
-            if(isLose(prize)) {
+        for (Prize prize : winningResult.keySet()) {
+            if (isLose(prize)) {
                 continue;
             }
             totalPrize += winningResult.get(prize) * prize.winningCash;
         }
-        return String.format("%.1f", ((double)totalPrize / payment) * 100);
+        return totalPrize;
     }
+
+    public static String calculateProfit(HashMap<Prize, Integer> winningResult, int payment) {
+        long totalPrize = getTotalPrize(winningResult);
+        return String.format("%.1f", ((double) totalPrize / payment) * 100);
+    }
+
     public static HashMap<Prize, Integer> calculatePrizeCount
             (List<Lotto> lottos, List<Integer> winningNumbers, int bonusNumber) {
         HashMap<Prize, Integer> result = new HashMap<Prize, Integer>() {{
@@ -54,7 +61,7 @@ public enum Prize {
         lottos.stream()
                 .forEach(lotto -> {
                             Prize prize = lotto.getPrize(winningNumbers, bonusNumber);
-                            if(isLose(prize)){
+                            if (isLose(prize)) {
                                 return;
                             }
                             int prevCount = result.get(prize);
